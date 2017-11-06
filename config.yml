@@ -1,0 +1,7 @@
+UsagiProspector:
+  - name: "Moloch Capture"
+    path: "/data/moloch/bin/moloch-capture"
+    param: "-c /data/moloch/etc/config.ini"
+  - name: "Moloch Viewer"
+    path: "/data/moloch/bin/node-viewer"
+    param: "viewer.js -c /data/moloch/etc/config.ini"
