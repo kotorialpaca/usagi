@@ -72,7 +72,7 @@ func start(n, args string) {
 		panic(err)
 	}
 	args += " &"
-	exec := exec.Command("sh", "-c", binary, args).Run()
+	exec := exec.Command("sh", "-c", binary, args).Start()
 	if exec != nil {
 		panic(exec)
 	}
