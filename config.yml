@@ -1,4 +1,5 @@
-UsagiProspector:
+#UsagiProspector should not be removed from Config file.
+usagiprospector:
   - name: "Moloch Capture"
     path: "/data/moloch/bin/moloch-capture"
     param: "-c /data/moloch/etc/config.ini"
