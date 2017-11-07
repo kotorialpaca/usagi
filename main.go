@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"io/ioutil"
 	"strings"
-	"syscall"
 
 	//"github.com/shirou/gopsutil/process"
 	"gopkg.in/yaml.v1"
@@ -72,9 +71,8 @@ func start(n, args string) {
 	if err != nil {
 		panic(err)
 	}
-	env := os.Environ()
 	args += " &"
-	exec := syscall.Exec(binary, strings.Split(args, " "), env)
+	exec := exec.Command("sh", "-c", binary, args).Run()
 	if exec != nil {
 		panic(exec)
 	}
