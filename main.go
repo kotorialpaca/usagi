@@ -57,6 +57,7 @@ func checkIfUp(n string) bool {
 	if err != nil {
 			fmt.Println(err)
 	}
+	fmt.Println(out)
 	if len(out) < 1 {
 		fmt.Printf("%d", len(out))
 		return false
