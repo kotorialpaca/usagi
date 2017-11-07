@@ -56,10 +56,9 @@ func checkIfUp(n string) bool {
 	out, err := exec.Command("sh", "-c", cmd).Output()
 	if err != nil {
 			fmt.Println(err)
-			return false
 	}
 	if len(out) < 1 {
-		fmt.Printf("%i", len(out))
+		fmt.Printf("%d", len(out))
 		return false
 	}
 
