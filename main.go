@@ -52,13 +52,15 @@ func readConfig() config {
 }
 
 func checkIfUp(n string) bool {
-	cmd := strings.Replace("ps ux | awk '/PROCESS/ && !/awk/ {print $2}'", "PROCESS", n, -1)
+	cmd := strings.Replace("ps ux | awk '/PROCESS/ && !/awk/ {print $2}'", "PROCESS", strings.Replace(n, "/", `\/`, -1), -1)
 	fmt.Println(cmd)
 	out, err := exec.Command("sh", "-c", cmd).Output()
 	if err != nil {
 			fmt.Println(err)
+			return false
 	}
 	if len(out) < 1 {
+		fmt.Printf("%i", len(out))
 		return false
 	}
 
@@ -71,6 +73,7 @@ func start(n, args string) {
 		panic(err)
 	}
 	env := os.Environ()
+	args += " &"
 	exec := syscall.Exec(binary, strings.Split(args, " "), env)
 	if exec != nil {
 		panic(exec)
