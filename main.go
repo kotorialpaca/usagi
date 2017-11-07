@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 	"os"
 	"os/signal"
@@ -19,6 +20,7 @@ type config struct {
 
 type Prospector struct {
 	Name string `yaml:"name"`
+	Search string `yaml:"search"`
 	Path string `yaml:"path"`
 	Param string `yaml:"param"`
 }
@@ -52,16 +54,24 @@ func readConfig() config {
 
 func checkIfUp(n string) bool {
 	cmd := strings.Replace("ps ux | awk '/PROCESS/ && !/awk/ {print $2}'", "PROCESS", strings.Replace(n, "/", `\/`, -1), -1)
-	fmt.Println(cmd)
+	//check command w/ below
+	//fmt.Println(cmd)
 	out, err := exec.Command("sh", "-c", cmd).Output()
 	if err != nil {
-			fmt.Println(err)
+			log.Println(err)
+			//fmt.Println(err)
 	}
-	fmt.Println(out)
+	//check PID with below, if exist
+	//else process isnt running
+	//fmt.Println(out)
 	if len(out) < 1 {
-		fmt.Printf("%d", len(out))
+		//checking length of output, if not running it wil yield 0
+		//fmt.Printf("%d", len(out))
+		log.Printf("Process %s is not running, reviving process\n", n)
 		return false
 	}
+	
+	log.Printf("Process %s is running, moving on to next task\n", n)
 
 	return true
 }
@@ -72,6 +82,7 @@ func start(n, args string) {
 		panic(err)
 	}
 	args += " &"
+	log.Printf("Attempting to start %s\n", n)
 	exec := exec.Command("sh", "-c", binary, args).Start()
 	if exec != nil {
 		panic(exec)
@@ -114,14 +125,15 @@ func main(){
 			}
 		default:
 			for _, v := range cfg.UsagiProspector {
-				run := checkIfUp(v.Path)
+				run := checkIfUp(v.Search)
 				if !run {
 					//Start process since its not running
 					go start(v.Path, v.Param)
 				}
 			}
 			//finished checking, go to sleep
-			time.Sleep(10000 * time.Millisecond)
+			log.Println("Check complete, sleeping for 1 minute.")
+			time.Sleep(60000 * time.Millisecond)
 		}
 	}
 

@@ -1,8 +1,10 @@
 #UsagiProspector should not be removed from Config file.
 usagiprospector:
   - name: "Moloch Capture"
-    path: "/data/moloch/bin/moloch-capture"
-    param: "-c /data/moloch/etc/config.ini"
+    search: "moloch-capture"
+    path: "/data/moloch/bin/run_capture.sh"
+    param: ""
   - name: "Moloch Viewer"
-    path: "/data/moloch/bin/node-viewer"
-    param: "viewer.js -c /data/moloch/etc/config.ini"
+    search: "node-viewer"
+    path: "/data/moloch/bin/run_viewer.sh"
+    param: ""
