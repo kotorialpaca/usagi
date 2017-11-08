@@ -15,6 +15,7 @@ import (
 )
 
 type config struct {
+	Waittime int32 `yaml:"waittime"`
 	UsagiProspector []Prospector `yaml:"usagiprospector"`
 }
 
@@ -89,10 +90,38 @@ func start(n, args string) {
 	}
 }
 
+func printUsagi(){
+	
+	fmt.Println(`----------------------------------------------------------`)
+	fmt.Println(`                g,                        g,`)
+	fmt.Println(`              vQmpg                   _vgQp,`)
+	fmt.Println(`              dQQQmp,                vgWQQQf`)
+	fmt.Println(`             =mQQQQQms             _qWQQQQQ>`)
+	fmt.Println(`              dQQQQQQms           _qWQQQQQQf`)
+	fmt.Println(`              )QQQQQQQms         _qWQQQQQQE'`)
+	fmt.Println(`               mQQQQQQQEggggggggg)QQQQQQQ@f`)
+	fmt.Println(`               ]$QQQQQQQnnnnnnnnnmQQQQQQQf`)
+	fmt.Println(`                ]$QQQQQQEnnnnnnnnQQQQQQQf`)
+	fmt.Println(`                gnVQQQQQmnnnnnnndQQQQQ@vs,`)
+	fmt.Println(`               %nnndQQQQQQQQQQQQQQQQQVvnnn,`)
+	fmt.Println(`              jonnngWQQQQQQQQQQQQQQQQmpvnnn`)
+	fmt.Println(`              oonqmQQ@WQQQQQQQQQQQQ@QQQmnnnL`)
+	fmt.Println(`              onnQQQQQv3H$QQQQQQVVndQQQQEnnc`)
+	fmt.Println(`              nndQQQQEQQnmQQQQQmEmQEQQQQQnn(`)
+	fmt.Println(`              {nmQQQQQggQQQ@VVQQQmgQWQQQQnn'`)
+	fmt.Println(`              ]nn$QQQQQQQmmQgmQgQQQWQQQQ5n}`)
+	fmt.Println(`               ]{nV$QQQQQQQQQQQQQQQQQQVnn"`)
+	fmt.Println(`                 "nnn3HVVHQQQQQWVVVHvnnr'`)
+	fmt.Println(`                   "{nnnnvnnnnnnnnnnn"'`)
+	fmt.Println(`                      7""nnnnnnn}"""`)
+	fmt.Println(`----------------------------------------------------------`)
+
+}
+
 func main(){
-
-	fmt.Println("Starting USAGI - Zombifying Daemon")
-
+	fmt.Println(`----------------------------------------------------------`)
+	fmt.Println("            Starting USAGI - Zombifying Daemon")
+	printUsagi()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 

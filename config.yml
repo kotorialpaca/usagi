@@ -1,8 +1,8 @@
 #UsagiProspector should not be removed from Config file.
 usagiprospector:
-  - name: "Moloch Capture"
-    search: "moloch-capture"
-    path: "/data/moloch/bin/run_capture.sh"
+  - name: "Redis"
+    search: "redis-server"
+    path: "/data/redis/bin/run_redis.sh"
     param: ""
   - name: "Moloch Viewer"
     search: "node-viewer"
