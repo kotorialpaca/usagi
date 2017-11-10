@@ -15,7 +15,7 @@ import (
 )
 
 type config struct {
-	Waittime int32 `yaml:"waittime"`
+	Waittime time.Duration `yaml:"waittime"`
 	UsagiProspector []Prospector `yaml:"usagiprospector"`
 }
 
@@ -161,8 +161,8 @@ func main(){
 				}
 			}
 			//finished checking, go to sleep
-			log.Println("Check complete, sleeping for 1 minute.")
-			time.Sleep(60000 * time.Millisecond)
+			log.Printf("Check complete, sleeping for %v.\n", cfg.Waittime * time.Millisecond)
+			time.Sleep(cfg.Waittime * time.Millisecond)
 		}
 	}
 
