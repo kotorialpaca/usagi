@@ -90,6 +90,13 @@ func start(n, args string) {
 	}
 }
 
+func setDefault(c config) config {
+	if c.Waittime == 0 {
+		c.Waittime = 60000
+	}
+	return c
+}
+
 func printUsagi(){
 	
 	fmt.Println(`----------------------------------------------------------`)
@@ -128,7 +135,7 @@ func main(){
 	shutdown := false
 
 	cfg := readConfig()
-
+	cfg = setDefault(cfg)
 	/* for _, v := range c.UsagiProspector {
 		fmt.Printf("name: %s\n", v.Name)
 		fmt.Printf("path: %s\n", v.Path)
