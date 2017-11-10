@@ -54,7 +54,7 @@ func readConfig() config {
 }
 
 func checkIfUp(n string) bool {
-	cmd := strings.Replace("ps ux | awk '/PROCESS/ && !/awk/ {print $2}'", "PROCESS", strings.Replace(n, "/", `\/`, -1), -1)
+	cmd := strings.Replace("ps -ef | awk '/PROCESS/ && !/awk/ {print $2}'", "PROCESS", strings.Replace(n, "/", `\/`, -1), -1)
 	//check command w/ below
 	//fmt.Println(cmd)
 	out, err := exec.Command("sh", "-c", cmd).Output()
