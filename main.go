@@ -82,11 +82,12 @@ func start(n, args string) {
 	if err != nil {
 		panic(err)
 	}
-	args += " &"
 	log.Printf("Attempting to start %s\n", n)
-	exec := exec.Command("sh", "-c", binary, args).Start()
+	cmd := `'` + binary + " " + args + `'`
+	fmt.Println(cmd)
+	exec := exec.Command("sh", "-c", cmd).Start()
 	if exec != nil {
-		panic(exec)
+		fmt.Printf("Command finished with error: %v" ,exec)
 	}
 }
 
