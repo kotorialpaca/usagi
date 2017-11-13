@@ -133,7 +133,7 @@ func main(){
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
-	shutdown := false
+	//shutdown := false
 
 	cfg := readConfig()
 	cfg = setDefault(cfg)
@@ -142,37 +142,55 @@ func main(){
 		fmt.Printf("path: %s\n", v.Path)
 		fmt.Printf("param: %s\n", v.Param)
 	} */
-
-	OUTTER:
+	go func(){
+		s := <- c
+		log.Printf("\nUSAGI is shutting down...\n")
+		log.Println(fmt.Sprintf("\n\nReceived signal: %x\n\n", s))
+		os.Exit(1)
+	}()
 	for {
-		if shutdown {
-			break
-		}
-
-		select {
-		case s, ok := <- c:
-			if ok {
-				fmt.Println("\nUSAGI is shutting down...\n")
-				fmt.Println(fmt.Sprintf("\n\nReceived signal: %x\n\n", s))
-				//shutdown sequence started
-				shutdown = true
-				//close go channel for os signal
-				c = nil
-				continue OUTTER
+		for _, v := range cfg.UsagiProspector {
+			run := checkIfUp(v.Search)
+			if !run {
+				//Start process since its not running
+				go start(v.Path, v.Param)
 			}
-		default:
-			for _, v := range cfg.UsagiProspector {
-				run := checkIfUp(v.Search)
-				if !run {
-					//Start process since its not running
-					go start(v.Path, v.Param)
-				}
-			}
-			//finished checking, go to sleep
-			log.Printf("Check complete, sleeping for %v.\n", cfg.Waittime * time.Millisecond)
-			time.Sleep(cfg.Waittime * time.Millisecond)
 		}
+		//finished checking, go to sleep
+		log.Println("Check complete, sleeping for 1 minute.")
+		time.Sleep(cfg.Waittime * time.Millisecond)
 	}
+	// // OU
+	// OUTTER:
+	// for {
+	// 	if shutdown {
+	// 		break
+	// 	}
+
+	// 	select {
+	// 	case s, ok := <- c:
+	// 		if ok {
+	// 			fmt.Println("\nUSAGI is shutting down...\n")
+	// 			fmt.Println(fmt.Sprintf("\n\nReceived signal: %x\n\n", s))
+	// 			//shutdown sequence started
+	// 			shutdown = true
+	// 			//close go channel for os signal
+	// 			c = nil
+	// 			continue OUTTER
+	// 		}
+	// 	default:
+	// 		for _, v := range cfg.UsagiProspector {
+	// 			run := checkIfUp(v.Search)
+	// 			if !run {
+	// 				//Start process since its not running
+	// 				go start(v.Path, v.Param)
+	// 			}
+	// 		}
+	// 		//finished checking, go to sleep
+	// 		log.Printf("Check complete, sleeping for %v.\n", cfg.Waittime * time.Millisecond)
+	// 		time.Sleep(cfg.Waittime * time.Millisecond)
+	// 	}
+	// }
 
 	fmt.Println("USAGI has shutdown gracefully. Sayonara!")
 }

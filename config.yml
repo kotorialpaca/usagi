@@ -1,3 +1,4 @@
+waittime: 60000
 #UsagiProspector should not be removed from Config file.
 usagiprospector:
   - name: "Redis"
