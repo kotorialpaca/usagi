@@ -82,13 +82,13 @@ func start(n, args string) {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("Attempting to start %s\n", n)
-	cmd := `'` + binary + " " + args + `'`
-	fmt.Println(cmd)
-	exec := exec.Command("sh", "-c", cmd).Start()
+	args += " &"
+	exec := exec.Command("/bin/sh", "-c", binary, args).Start()
 	if exec != nil {
-		fmt.Printf("Command finished with error: %v" ,exec)
+		panic(exec)
 	}
+
+	log.Printf("Attempting to start %s\n", n)
 }
 
 func setDefault(c config) config {
@@ -153,7 +153,7 @@ func main(){
 			run := checkIfUp(v.Search)
 			if !run {
 				//Start process since its not running
-				go start(v.Path, v.Param)
+				start(v.Path, v.Param)
 			}
 		}
 		//finished checking, go to sleep
