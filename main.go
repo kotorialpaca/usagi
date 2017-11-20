@@ -135,7 +135,7 @@ func main(){
 		log.Fatal(err)
 	}
 	log.Println("Runtime path is: " + dir)
-	cfgPath := "./config.yml"
+	cfgPath := dir + "/config.yml"
 	//shutdown := false
 	if len(os.Args) > 1 {
 		log.Println("Config file path found in the argument, will proceed with given config file path.")
