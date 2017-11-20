@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"io/ioutil"
 	"strings"
+	"path/filepath"
 
 	//"github.com/shirou/gopsutil/process"
 	"gopkg.in/yaml.v1"
@@ -40,9 +41,9 @@ func checkBinaryExists(b string) bool {
 	}
 }
 
-func readConfig() config {
+func readConfig(path string) config {
 	var c config
-	f, err := ioutil.ReadFile("config.yml")
+	f, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Println("error opening config file")
 	}
@@ -80,7 +81,7 @@ func checkIfUp(n string) bool {
 func start(n, args string) {
 	args += " &"
 	cmd := n + " " + args 
-	exec := exec.Command("/bin/sh", "-c", cmd).Start()
+	exec := exec.Command("/bin/sh", "-c", cmd).Run()
 	if exec != nil {
 		panic(exec)
 	}
@@ -129,10 +130,19 @@ func main(){
 	printUsagi()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
-
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Runtime path is: " + dir)
+	cfgPath := "./config.yml"
 	//shutdown := false
-
-	cfg := readConfig()
+	if len(os.Args) > 1 {
+		log.Println("Config file path found in the argument, will proceed with given config file path.")
+		cfgPath = os.Args[1]
+	}
+	log.Println("Reading config file from: " + cfgPath)
+	cfg := readConfig(cfgPath)
 	cfg = setDefault(cfg)
 	for _, v := range cfg.UsagiProspector {
 		_, err := exec.LookPath(v.Path)
